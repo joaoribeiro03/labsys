@@ -65,7 +65,7 @@ $exames = $exameController->listarExames();
 <body>
     <!-- Formulário de Cadastro de Exames -->
     <form method="POST">
-        <h1>Bem Vindo ao LabSys<i class="fas fa-flask"></i></h1>
+        <h1>Bem Vindo ao LabSys <i class="fas fa-flask"></i></h1>
         <h3>Cadastrar Exame</h3>
         <input type="text" name="codigo" placeholder="Código do Exame" required>
         <input type="text" name="descricao" placeholder="Descrição do Exame" required>

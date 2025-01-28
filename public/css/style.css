@@ -1,13 +1,23 @@
 /* Adicionando flexbox para centralização */
 body {
     font-family: Arial, sans-serif;
-    margin: 0; /* Remove margens padrão */
+    margin: 0;
+    /* Remove margens padrão */
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    height: 100vh; /* Garantir altura completa da tela */
-    background-color: #f4f4f4; /* Cor de fundo */
-    flex-direction: column; /* Organiza os formulários em coluna */
+    justify-content: center;
+    /* Centraliza horizontalmente */
+    align-items: center;
+    /* Centraliza verticalmente */
+    height: 100vh;
+    /* Garantir altura completa da tela */
+    background-color: #f4f4f4;
+    /* Cor de fundo */
+    flex-direction: column;
+    /* Organiza os formulários em coluna */
+}
+
+body .h1 {
+    text-align: center;
 }
 
 /* Estilo para os formulários */
@@ -17,7 +27,8 @@ form {
     border: 1px solid #ccc;
     border-radius: 8px;
     max-width: 600px;
-    width: 100%; /* Faz com que o formulário ocupe a largura máxima */
+    width: 100%;
+    /* Faz com que o formulário ocupe a largura máxima */
 }
 
 /* Estilo para o título do formulário */
@@ -26,7 +37,9 @@ h3 {
 }
 
 /* Estilo para os campos do formulário */
-input, select, button {
+input,
+select,
+button {
     display: block;
     width: 100%;
     margin-bottom: 10px;

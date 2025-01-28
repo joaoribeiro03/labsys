@@ -2,9 +2,10 @@
 require_once 'app/controllers/ExameController.php';
 require_once 'app/controllers/PacienteController.php';
 
-// Configuração do banco de dados
+// Configuração do banco de dados labsysdb.mysql.database.azure.com
 try {
-    $pdo = new PDO('labsysdb.mysql.database.azure.com', 'joaolucas', 'AbcA1313$');
+    //  $pdo = new PDO('labsysdb.mysql.database.azure.com', 'joaolucas', 'AbcA1313$');
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=3306;charset=utf8", DB_USER, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erro na conexão com o banco de dados: " . $e->getMessage());

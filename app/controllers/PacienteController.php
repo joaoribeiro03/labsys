@@ -32,4 +32,28 @@ class PacienteController
 
         return $paciente->listarTodos();
     }
+
+    public function vincularExameAoPaciente($numeroAtendimento, $codigoExame)
+    {
+        // Obter os IDs do paciente e do exame
+        $paciente = new Paciente();
+        $pacienteId = $paciente->obterIdPorNumeroAtendimento($numeroAtendimento);
+
+        if (!$pacienteId) {
+            throw new Exception("Paciente não encontrado.");
+        }
+
+        $exame = new Exame(); // Supondo que você tenha uma classe Exame que lida com os exames
+        $exameId = $exame->obterIdPorCodigo($codigoExame);
+
+        if (!$exameId) {
+            throw new Exception("Exame não encontrado.");
+        }
+
+        // Cria uma instância do modelo para realizar a vinculação
+        $vincular = new VincularExamePaciente();
+
+        // Chama o método para vincular o exame ao paciente
+        $vincular->vincular($pacienteId, $exameId);
+    }
 }

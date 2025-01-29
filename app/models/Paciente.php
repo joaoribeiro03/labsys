@@ -101,4 +101,11 @@ class Paciente
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function obterIdPorNumeroAtendimento($numeroAtendimento)
+    {
+        $sql = "SELECT id FROM pacientes WHERE numero_atendimento = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$numeroAtendimento]);
+        return $stmt->fetchColumn();
+    }
 }

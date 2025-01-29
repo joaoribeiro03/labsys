@@ -1,11 +1,11 @@
 <?php
 require_once 'app/controllers/ExameController.php';
 require_once 'app/controllers/PacienteController.php';
+require_once 'app/controllers/VincularExamePacienteController.php';
 
-// Configuração do banco de dados labsysdb.mysql.database.azure.com
+// Configuração do banco de dados
 try {
-    //  $pdo = new PDO('labsysdb.mysql.database.azure.com', 'joaolucas', 'AbcA1313$');
-    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=3306;charset=utf8", DB_USER, DB_PASSWORD);
+    $pdo = new PDO('mysql:host=localhost;dbname=worklabweb', 'root', 'root');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erro na conexão com o banco de dados: " . $e->getMessage());
@@ -42,9 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $numeroAtendimento = $pacienteController->cadastrarPaciente($dadosPaciente);
             echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
+
+            // Vincular exames após cadastro
+            if (!empty($_POST['codigo_exame'])) {
+                foreach ($_POST['codigo_exame'] as $codigoExame) {
+                    $pacienteController->vincularExameAoPaciente($numeroAtendimento, $codigoExame);
+                }
+            }
         }
     } catch (Exception $e) {
-        echo "<p>Erro: " . htmlspecialchars($e->getMessage()) . "</p>";
+        echo "<p>Erro: " . $e->getMessage() . "</p>";
     }
 }
 
@@ -99,24 +106,21 @@ $exames = $exameController->listarExames();
 
         <button type="button" id="add-exame">+ Adicionar Exame</button>
         <button type="submit" name="cadastrar_paciente">Cadastrar Paciente</button>
-        <button type="button" id="generate-report">Gerar Relatório</button>
     </form>
-
-    <div id="relatorio"></div>
 
     <script>
         document.getElementById('add-exame').addEventListener('click', function() {
             var exameContainer = document.getElementById('exames-container');
             var newExameSelect = document.createElement('div');
             newExameSelect.classList.add('exame');
-            newExameSelect.innerHTML = `        
-        <select name="codigo_exame[]" required>
-            <option value="">Selecione o Exame</option>
-            <?php foreach ($exames as $exame): ?>
-                <option value="<?= $exame['codigo'] ?>"><?= $exame['codigo'] ?> - R$ <?= number_format($exame['valor'], 2, ',', '.') ?></option>
-            <?php endforeach; ?>
-        </select>
-    `;
+            newExameSelect.innerHTML = `
+                <select name="codigo_exame[]" required>
+                    <option value="">Selecione o Exame</option>
+                    <?php foreach ($exames as $exame): ?>
+                        <option value="<?= $exame['codigo'] ?>"><?= $exame['codigo'] ?> - R$ <?= number_format($exame['valor'], 2, ',', '.') ?></option>
+                    <?php endforeach; ?>
+                </select>
+            `;
             exameContainer.appendChild(newExameSelect);
         });
     </script>

@@ -43,4 +43,12 @@ class Exame
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$this->codigo, $this->descricao, $this->valor]);
     }
+
+    public function obterIdPorCodigo($codigoExame)
+    {
+        $sql = "SELECT id FROM exames WHERE codigo = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$codigoExame]);
+        return $stmt->fetchColumn();
+    }
 }

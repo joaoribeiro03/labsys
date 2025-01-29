@@ -5,7 +5,7 @@ require_once 'app/controllers/VincularExamePacienteController.php';
 
 // Configuração do banco de dados
 try {
-    $pdo = new PDO('mysql:host=localhost;dbname=worklabweb', 'root', 'root');
+    $pdo = new PDO('mysql:host=localhost;dbname=labsys', 'joaolucas', 'AbcA1313$');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erro na conexão com o banco de dados: " . $e->getMessage());

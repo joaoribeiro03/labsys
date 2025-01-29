@@ -5,59 +5,40 @@ class VincularExamePacienteController
 {
     private $pdo;
 
-    public function __construct()
+    public function __construct($pdo)
     {
-        $this->pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo = $pdo;
     }
 
-    // Busca o ID do paciente com base no numero_atendimento
-    public function obterPacienteId($numeroAtendimento)
+    public function vincularExameAoPaciente($numeroAtendimento, $codigoExame)
+    {
+        $pacienteId = $this->obterPacienteId($numeroAtendimento);
+        $exameId = $this->obterExameId($codigoExame);
+
+        if ($pacienteId && $exameId) {
+            $sql = "INSERT INTO paciente_exames (paciente_id, exame_id) VALUES (?, ?)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$pacienteId, $exameId]);
+            echo "Exame vinculado ao paciente com sucesso!";
+        } else {
+            echo "Falha ao vincular exame. Verifique os dados.";
+        }
+    }
+
+    private function obterPacienteId($numeroAtendimento)
     {
         $sql = "SELECT id FROM pacientes WHERE numero_atendimento = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$numeroAtendimento]);
-        $pacienteId = $stmt->fetchColumn();
-
-        if (!$pacienteId) {
-            throw new Exception("Paciente não encontrado!");
-        }
-
-        return $pacienteId;
+        return $stmt->fetchColumn();
     }
 
-    // Busca o ID do exame com base no código do exame
-    public function obterExameId($codigoExame)
+    private function obterExameId($codigoExame)
     {
         $sql = "SELECT id FROM exames WHERE codigo = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$codigoExame]);
-        $exameId = $stmt->fetchColumn();
-
-        if (!$exameId) {
-            throw new Exception("Exame não encontrado!");
-        }
-
-        return $exameId;
+        return $stmt->fetchColumn();
     }
-
-    // Vincula o paciente ao exame, garantindo que não haja duplicados
-    public function vincularExameAoPaciente($numeroAtendimento, $codigoExame)
-    {
-        // Obter os IDs do paciente e do exame
-        $paciente = new Paciente();
-        $pacienteId = $paciente->obterIdPorNumeroAtendimento($numeroAtendimento);
-    
-        $exame = new Exame(); // Supondo que você tenha uma classe Exame que lida com os exames
-        $exameId = $exame->obterIdPorCodigo($codigoExame);
-    
-        if ($pacienteId && $exameId) {
-            // Cria uma instância do modelo para realizar a vinculação
-            $vincular = new VincularExamePaciente();
-    
-            // Chama o método para vincular o exame ao paciente
-            $vincular->vincular($pacienteId, $exameId);
-        }
-    }
-    
 }
+?>

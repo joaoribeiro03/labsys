@@ -2,29 +2,31 @@
 require_once 'app/controllers/ExameController.php';
 require_once 'app/controllers/PacienteController.php';
 require_once 'app/controllers/VincularExamePacienteController.php';
+require_once 'config/config.php'; // Verifica se o arquivo de configuração do banco está incluído
 
 // Configuração do banco de dados
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=3306;charset=utf8", DB_USER, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Erro na conexão com o banco de dados: " . $e->getMessage());
+    die("<p>Erro na conexão com o banco de dados: " . $e->getMessage() . "</p>");
 }
 
-// Instancia os controladores com o PDO
 $exameController = new ExameController($pdo);
 $pacienteController = new PacienteController();
 
-// Tratamento para requisições POST
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Cadastrar Exame
         if (isset($_POST['cadastrar_exame'])) {
             $dadosExame = [
-                'codigo' => $_POST['codigo'],
-                'descricao' => $_POST['descricao'],
-                'valor' => $_POST['valor']
+                'codigo' => $_POST['codigo'] ?? '',
+                'descricao' => $_POST['descricao'] ?? '',
+                'valor' => $_POST['valor'] ?? ''
             ];
+
 
             $exameController->cadastrarExame($dadosExame);
             echo "<p>Exame cadastrado com sucesso!</p>";
@@ -33,21 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Cadastrar Paciente
         if (isset($_POST['cadastrar_paciente'])) {
             $dadosPaciente = [
-                'nome' => $_POST['nome'],
-                'sexo' => $_POST['sexo'],
-                'email' => $_POST['email'],
-                'celular' => $_POST['celular'],
-                'exames' => $_POST['codigo_exame'] // Recebe todos os exames selecionados
+                'nome' => $_POST['nome'] ?? '',
+                'sexo' => $_POST['sexo'] ?? '',
+                'email' => $_POST['email'] ?? '',
+                'celular' => $_POST['celular'] ?? '',
+                'exames' => $_POST['codigo_exame'] ?? [] // Recebe todos os exames selecionados
             ];
 
+
+            // Cadastrar paciente e obter o número de atendimento
             $numeroAtendimento = $pacienteController->cadastrarPaciente($dadosPaciente);
             echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
 
-            // Vincular exames após cadastro
-            if (!empty($_POST['codigo_exame'])) {
-                foreach ($_POST['codigo_exame'] as $codigoExame) {
+            // Vincular exames ao paciente, se houver
+            if (!empty($dadosPaciente['exames'])) {
+                foreach ($dadosPaciente['exames'] as $codigoExame) {
                     $pacienteController->vincularExameAoPaciente($numeroAtendimento, $codigoExame);
                 }
+                echo "<p>Exames vinculados com sucesso!</p>";
             }
         }
     } catch (Exception $e) {

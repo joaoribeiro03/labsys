@@ -88,7 +88,8 @@ class Paciente
                 $this->celular
             ]);
 
-            return $this->numero_atendimento;
+            echo "<script>alert('Paciente cadastrado com sucesso!'); window.location.href = 'index.php';</script>";
+            
         } catch (PDOException $e) {
             throw new Exception("Erro ao cadastrar paciente: " . $e->getMessage());
         }

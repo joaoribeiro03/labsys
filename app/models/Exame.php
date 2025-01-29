@@ -2,7 +2,7 @@
 require_once './config/config.php';
 class Exame
 {
-    private $pdo;
+    private $pdo; //armazena a conexão com o bd
     private $codigo;
     private $descricao;
     private $valor;

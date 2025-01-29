@@ -4,14 +4,14 @@ require_once 'app/controllers/PacienteController.php';
 require_once 'app/controllers/VincularExamePacienteController.php';
 require_once 'config/config.php'; // Verifica se o arquivo de configuração do banco está incluído
 
-// Configuração do banco de dados
+/* Configuração do banco de dados
 try {
     $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";port=3306;charset=utf8", DB_USER, DB_PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("<p>Erro na conexão com o banco de dados: " . $e->getMessage() . "</p>");
 }
-
+*/
 $exameController = new ExameController($pdo);
 $pacienteController = new PacienteController();
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             $exameController->cadastrarExame($dadosExame);
-            echo "<p>Exame cadastrado com sucesso!</p>";
+          //  echo "<p>Exame cadastrado com sucesso!</p>";
         }
 
         // Cadastrar Paciente
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Cadastrar paciente e obter o número de atendimento
             $numeroAtendimento = $pacienteController->cadastrarPaciente($dadosPaciente);
-            echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
+          //  echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
 
             // Vincular exames ao paciente, se houver
             if (!empty($dadosPaciente['exames'])) {

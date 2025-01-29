@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             $exameController->cadastrarExame($dadosExame);
-          //  echo "<p>Exame cadastrado com sucesso!</p>";
+            //  echo "<p>Exame cadastrado com sucesso!</p>";
         }
 
         // Cadastrar Paciente
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Cadastrar paciente e obter o número de atendimento
             $numeroAtendimento = $pacienteController->cadastrarPaciente($dadosPaciente);
-          //  echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
+            //  echo "<p>Paciente cadastrado com sucesso! Número de atendimento: $numeroAtendimento</p>";
 
             // Vincular exames ao paciente, se houver
             if (!empty($dadosPaciente['exames'])) {
@@ -111,6 +111,7 @@ $exames = $exameController->listarExames();
 
         <button type="button" id="add-exame">+ Adicionar Exame</button>
         <button type="submit" name="cadastrar_paciente">Cadastrar Paciente</button>
+        <button type="submit" name="cadastrar_paciente">Relatório de Pacientes</button>
     </form>
 
     <script>

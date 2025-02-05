@@ -2,7 +2,7 @@
 require_once './config/config.php';
 class Exame
 {
-    private $pdo; //armazena a conexão com o bd
+    private $pdo; //armazena a conexão com o bando de dados
     private $codigo;
     private $descricao;
     private $valor;
@@ -28,6 +28,7 @@ class Exame
         $this->valor = $valor;
     }
 
+    /*
     public function cadastrar()
     {
         $sql = "SELECT COUNT(*) FROM exames WHERE codigo = ?";
@@ -43,7 +44,7 @@ class Exame
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$this->codigo, $this->descricao, $this->valor]);
     }
-
+*/
     public function obterIdPorCodigo($codigoExame)
     {
         $sql = "SELECT id FROM exames WHERE codigo = ?";
